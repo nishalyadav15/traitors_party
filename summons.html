@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Summons — The Traitors</title>
+<meta name="description" content="Where to come, when, and what to send the host on Friday.">
+<meta property="og:title" content="The Summons — The Traitors">
+<meta property="og:description" content="Where to come, when, and what to send the host on Friday.">
+<meta property="og:image" content="https://nishalyadav15.github.io/traitors/og.png">
+<meta name="theme-color" content="#4A1622">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<nav><div class="nav-inner">
+  <a href="index.html">The Gate</a>
+  <a href="notice-board.html">Notice Board</a>
+  <a href="round-table.html">Round Table</a>
+  <a href="armoury.html">The Armoury</a>
+  <a href="crypt.html">The Crypt</a>
+  <a href="great-hall.html">Great Hall</a>
+  <a href="summons.html" aria-current="page">The Summons</a>
+</div></nav>
+
+<header class="wrap pagehead">
+  <h1 class="roomname">The Summons</h1>
+  <p class="roomsub">One thing to send on Friday. One place to be on Saturday.</p>
+</header>
+
+<section class="wrap">
+  <h2>The Friday brief</h2>
+  <p>Every one of the sixteen sends the host the same thing, the day before. Everyone is asked. Everyone answers.</p>
+  <div class="brief">
+    <p id="brief-text">In thirty to fifty words: would you rather be a Traitor or Faithful, and why? Be honest — it isn't a vote, and the host decides.</p>
+  </div>
+  <div class="actions">
+    <button class="copy primary" id="wa-send" type="button">Message the host</button>
+    <button class="copy" id="copy-brief" type="button">Copy the brief</button>
+  </div>
+  <p>The button opens WhatsApp with the host, with a starting line already in it — finish the sentence and send. Don't discuss your answer with anyone else; what you claim to have written is your business on Saturday.</p>
+</section>
+
+<div class="rule"><span>◆</span></div>
+
+<section class="wrap">
+  <h2>Saturday</h2>
+  <dl>
+    <div class="detail">
+      <dt>When</dt>
+      <dd>Saturday 12 September. Doors at one o'clock. It ends by seven.</dd>
+    </div>
+    <div class="detail">
+      <dt>Where</dt>
+      <dd>House 84. <a href="https://maps.app.goo.gl/MDGpeeTzHGgWJDAv9">Open in Maps</a></dd>
+    </div>
+    <div class="detail">
+      <dt>Parking</dt>
+      <dd>Available on site.</dd>
+    </div>
+    <div class="detail">
+      <dt>Bring</dt>
+      <dd>Nothing. House 84 has everything for the party.</dd>
+    </div>
+    <div class="detail">
+      <dt>Also bring</dt>
+      <dd>A charged phone. You'll need it, and you won't get to plug it in mid-session.</dd>
+    </div>
+  </dl>
+
+  <p>Come on time. The Selection happens at quarter past one and it happens once — everyone's phone buzzes at the same moment, and if you're not in the house you're not in the game.</p>
+
+  <div class="next">
+    <a href="index.html">
+      <span class="lab">Back to</span>
+      <span class="to">The Gate →</span>
+    </a>
+  </div>
+</section>
+
+<footer class="wrap">
+  <p>It ends at seven.<br>Everything said before then stays in the game.</p>
+  <p class="sig">◆</p>
+</footer>
+
+<script>
+(function(){
+  // assembled at runtime so the number isn't sitting in the page source
+  var parts = ["9191", "2128", "8503"];
+  var msg = "Nishal \u2014 my answer for Saturday. I'd rather be [Traitor / Faithful], because\u2026";
+  document.getElementById("wa-send").addEventListener("click", function(){
+    window.open("https://wa.me/" + parts.join("") + "?text=" + encodeURIComponent(msg),
+                "_blank", "noopener");
+  });
+})();
+
+(function(){
+  var btn = document.getElementById("copy-brief");
+  var src = document.getElementById("brief-text");
+  btn.addEventListener("click", function(){
+    var text = src.textContent.trim();
+    function done(){
+      var was = btn.textContent;
+      btn.textContent = "Copied";
+      setTimeout(function(){ btn.textContent = was; }, 1800);
+    }
+    if (navigator.clipboard && navigator.clipboard.writeText){
+      navigator.clipboard.writeText(text).then(done, fallback);
+    } else {
+      fallback();
+    }
+    function fallback(){
+      var ta = document.createElement("textarea");
+      ta.value = text;
+      ta.setAttribute("readonly", "");
+      ta.style.position = "absolute";
+      ta.style.left = "-9999px";
+      document.body.appendChild(ta);
+      ta.select();
+      try { document.execCommand("copy"); done(); } catch(e){ btn.textContent = "Copy failed"; }
+      document.body.removeChild(ta);
+    }
+  });
+})();
+</script>
+
+</body>
+</html>
