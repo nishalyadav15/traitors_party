@@ -213,8 +213,8 @@ ol.advice li::before{
 
 /* ---------- cast grid: gapless 4x4 poster ---------- */
 .cast{
-  display:grid;grid-template-columns:repeat(4,1fr);
-  gap:0;margin:0 0 1.8rem;padding:0;list-style:none;
+  display:grid;grid-template-columns:repeat(2,1fr);
+  gap:0;margin:0 0 1rem;padding:0;list-style:none;
   border:1px solid rgba(240,194,78,.34);
 }
 .cast li{margin:0;}
@@ -222,6 +222,7 @@ ol.advice li::before{
   margin:0;position:relative;aspect-ratio:1/1;overflow:hidden;
   background:var(--wine-deep);
   outline:1px solid rgba(240,194,78,.16);outline-offset:-1px;
+  cursor:pointer;
 }
 .cast img{
   width:100%;height:100%;object-fit:cover;display:block;
@@ -231,15 +232,22 @@ ol.advice li::before{
 }
 .cast .nameplate{
   position:absolute;left:0;right:0;bottom:0;z-index:2;
-  padding:1.6rem .35rem .4rem;
-  background:linear-gradient(180deg,transparent,rgba(30,7,13,.88) 55%);
-  font-family:"Cinzel",serif;font-size:.58rem;letter-spacing:.08em;
+  padding:2rem .4rem .55rem;
+  background:linear-gradient(180deg,transparent,rgba(30,7,13,.9) 58%);
+  font-family:"Cinzel",serif;font-size:.78rem;letter-spacing:.07em;
   color:var(--gold);text-align:center;line-height:1.25;
-  text-shadow:0 1px 3px rgba(0,0,0,.8);
+  text-shadow:0 1px 3px rgba(0,0,0,.85);
 }
 .cast .nameplate.unnamed{color:var(--rose);opacity:.65;}
 @media (hover:hover){
   .cast li:hover img{filter:none;mix-blend-mode:normal;transform:scale(1.04);}
+}
+/* tap to reveal, for touch screens */
+.cast li.revealed img{filter:none;mix-blend-mode:normal;}
+.cast li.revealed figure{outline-color:var(--gold);}
+.cast-hint{
+  font-family:"Cinzel",serif;font-size:.66rem;letter-spacing:.16em;
+  color:var(--gold-dim);text-align:center;margin:0 0 1.8rem;
 }
 /* to show photos in full colour, delete the two lines marked TINT above */
 
@@ -319,6 +327,8 @@ body.crypt a:focus-visible{outline-color:var(--claret);}
 /* ---------- tablet ---------- */
 @media (min-width:620px){
   body{font-size:1.125rem;}
+  .cast{grid-template-columns:repeat(4,1fr);}
+  .cast .nameplate{font-size:.62rem;padding:1.6rem .35rem .4rem;}
   .phone-split{grid-template-columns:1fr 1fr;gap:1.6rem;}
   .countdown{gap:2.4rem;}
   .cd-num{font-size:2.1rem;}
@@ -353,7 +363,7 @@ body.crypt a:focus-visible{outline-color:var(--claret);}
   .rooms > .room:nth-last-child(2){border-bottom:1px solid rgba(240,194,78,.24);}
 
   .roster{grid-template-columns:repeat(4,1fr);}
-  .cast .nameplate{font-size:.82rem;padding:2.2rem .5rem .6rem;}
+  .cast .nameplate{font-size:.86rem;padding:2.4rem .5rem .65rem;}
   .sched-row{grid-template-columns:5rem 1fr;}
   .token{grid-template-columns:4.2rem 1fr;gap:1.5rem;}
   .token svg{width:3.1rem;height:3.1rem;}

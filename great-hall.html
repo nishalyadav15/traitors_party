@@ -124,6 +124,7 @@
       </figure>
     </li>
   </ul>
+  <p class="cast-hint">Tap a face</p>
 
   <p>You will spend six hours reading these people. Most of them you already know. That will turn out to matter less than you'd expect — the person you'd vouch for without thinking is exactly the person worth watching, because they know you'd vouch for them.</p>
 
@@ -138,6 +139,19 @@
 <footer class="wrap">
   <p class="sig">◆</p>
 </footer>
+
+<script>
+(function(){
+  var cards = document.querySelectorAll(".cast li");
+  cards.forEach(function(card){
+    card.addEventListener("click", function(){
+      var on = card.classList.contains("revealed");
+      cards.forEach(function(c){ c.classList.remove("revealed"); });
+      if (!on) card.classList.add("revealed");
+    });
+  });
+})();
+</script>
 
 </body>
 </html>
