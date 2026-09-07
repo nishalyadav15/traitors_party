@@ -211,18 +211,35 @@ ol.advice li::before{
 .roster .num{color:var(--gold-dim);font-size:.72rem;min-width:1.3rem;}
 .roster .slot{color:var(--rose);font-style:normal;}
 
-/* ---------- cast grid: gapless 4x4 poster ---------- */
-.cast{
-  display:grid;grid-template-columns:repeat(2,1fr);
-  gap:0;margin:0 0 1rem;padding:0;list-style:none;
-  border:1px solid rgba(240,194,78,.34);
+/* ---------- host banner ---------- */
+.host-banner{
+  position:relative;aspect-ratio:2/1;overflow:hidden;
+  border:1px solid rgba(240,194,78,.4);
+  background:var(--wine-deep);cursor:pointer;margin:0 0 1.4rem;
 }
-.cast li{margin:0;}
+.host-banner img{
+  width:100%;height:100%;object-fit:cover;display:block;
+  transition:filter .4s ease;
+}
+.host-banner .plate{
+  position:absolute;left:0;right:0;bottom:0;z-index:2;
+  padding:2.6rem .6rem .7rem;
+  background:linear-gradient(180deg,transparent,rgba(30,7,13,.92) 60%);
+  font-family:"Cinzel",serif;font-size:.72rem;letter-spacing:.22em;
+  color:var(--gold);text-align:center;
+}
+.host-banner:hover img{filter:brightness(1.08);}
+
+/* ---------- cast grid: gapless, centred last row ---------- */
+.cast{
+  display:flex;flex-wrap:wrap;justify-content:center;
+  gap:0;margin:0 0 1rem;padding:0;list-style:none;
+}
+.cast li{margin:0;flex:0 0 50%;max-width:50%;}
 .cast figure{
   margin:0;position:relative;aspect-ratio:1/1;overflow:hidden;
-  background:var(--wine-deep);
-  outline:1px solid rgba(240,194,78,.16);outline-offset:-1px;
-  cursor:pointer;
+  background:var(--wine-deep);cursor:pointer;
+  outline:1px solid rgba(240,194,78,.28);outline-offset:-1px;
 }
 .cast img{
   width:100%;height:100%;object-fit:cover;display:block;
@@ -242,14 +259,36 @@ ol.advice li::before{
 @media (hover:hover){
   .cast li:hover img{filter:none;mix-blend-mode:normal;transform:scale(1.04);}
 }
-/* tap to reveal, for touch screens */
 .cast li.revealed img{filter:none;mix-blend-mode:normal;}
-.cast li.revealed figure{outline-color:var(--gold);}
+.cast li.revealed figure{outline-color:var(--gold);outline-width:2px;}
 .cast-hint{
   font-family:"Cinzel",serif;font-size:.66rem;letter-spacing:.16em;
-  color:var(--gold-dim);text-align:center;margin:0 0 1.8rem;
+  color:var(--gold-dim);text-align:center;margin:0 0 1.2rem;
 }
 /* to show photos in full colour, delete the two lines marked TINT above */
+
+/* ---------- the quote panel ---------- */
+.speaks{
+  border:1px solid rgba(240,194,78,.3);
+  background:rgba(240,194,78,.05);
+  padding:1.6rem 1.5rem 1.4rem;margin:0 0 2rem;
+  min-height:8.5rem;text-align:center;
+}
+.speaks .mark{
+  font-family:"Cinzel",serif;font-size:2rem;color:var(--gold);
+  opacity:.45;line-height:.6;display:block;margin-bottom:.7rem;
+}
+.speaks .line{
+  font-size:1.16rem;font-style:italic;color:#FFF6DE;
+  line-height:1.5;margin:0 0 1rem;
+}
+.speaks .who{
+  font-family:"Cinzel",serif;font-size:.72rem;letter-spacing:.2em;
+  color:var(--gold);
+}
+.speaks.idle .line{color:var(--rose);opacity:.7;font-style:italic;}
+.speaks.idle .who{visibility:hidden;}
+.speaks.host{border-color:var(--gold);background:rgba(240,194,78,.09);}
 
 /* ---------- summons ---------- */
 .brief{
@@ -327,8 +366,8 @@ body.crypt a:focus-visible{outline-color:var(--claret);}
 /* ---------- tablet ---------- */
 @media (min-width:620px){
   body{font-size:1.125rem;}
-  .cast{grid-template-columns:repeat(4,1fr);}
-  .cast .nameplate{font-size:.62rem;padding:1.6rem .35rem .4rem;}
+  .cast li{flex:0 0 25%;max-width:25%;}
+  .cast .nameplate{font-size:.66rem;padding:1.6rem .35rem .45rem;}
   .phone-split{grid-template-columns:1fr 1fr;gap:1.6rem;}
   .countdown{gap:2.4rem;}
   .cd-num{font-size:2.1rem;}
@@ -364,6 +403,8 @@ body.crypt a:focus-visible{outline-color:var(--claret);}
 
   .roster{grid-template-columns:repeat(4,1fr);}
   .cast .nameplate{font-size:.86rem;padding:2.4rem .5rem .65rem;}
+  .speaks .line{font-size:1.3rem;}
+  .host-banner .plate{font-size:.86rem;padding:3.4rem .8rem .9rem;}
   .sched-row{grid-template-columns:5rem 1fr;}
   .token{grid-template-columns:4.2rem 1fr;gap:1.5rem;}
   .token svg{width:3.1rem;height:3.1rem;}
