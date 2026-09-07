@@ -223,10 +223,12 @@ ol.advice li::before{
 }
 .host-banner .plate{
   position:absolute;left:0;right:0;bottom:0;z-index:2;
-  padding:2.6rem .6rem .7rem;
-  background:linear-gradient(180deg,transparent,rgba(30,7,13,.92) 60%);
-  font-family:"Cinzel",serif;font-size:.72rem;letter-spacing:.22em;
-  color:var(--gold);text-align:center;
+  padding:3.2rem .6rem .9rem;
+  background:linear-gradient(180deg,transparent,rgba(30,7,13,.94) 62%);
+  font-family:"Cinzel",serif;font-weight:700;
+  font-size:1.35rem;letter-spacing:.14em;
+  color:#FFF6DE;text-align:center;line-height:1;
+  text-shadow:0 2px 8px rgba(0,0,0,.8);
 }
 .host-banner:hover img{filter:brightness(1.08);}
 
@@ -267,28 +269,53 @@ ol.advice li::before{
 }
 /* to show photos in full colour, delete the two lines marked TINT above */
 
-/* ---------- the quote panel ---------- */
-.speaks{
-  border:1px solid rgba(240,194,78,.3);
-  background:rgba(240,194,78,.05);
-  padding:1.6rem 1.5rem 1.4rem;margin:0 0 2rem;
-  min-height:8.5rem;text-align:center;
+/* ---------- speech bubble ---------- */
+.cast-stage{position:relative;}
+.cast.dimmed li:not(.revealed) figure{
+  opacity:.34;transform:scale(.97);
 }
-.speaks .mark{
-  font-family:"Cinzel",serif;font-size:2rem;color:var(--gold);
-  opacity:.45;line-height:.6;display:block;margin-bottom:.7rem;
+.cast li figure{transition:opacity .3s ease, transform .3s ease, outline-color .3s ease;}
+.cast li.revealed{position:relative;z-index:6;}
+.cast li.revealed figure{
+  transform:scale(1.07);
+  outline-color:var(--gold);outline-width:2px;
+  box-shadow:0 14px 34px rgba(20,4,9,.6);
 }
-.speaks .line{
-  font-size:1.16rem;font-style:italic;color:#FFF6DE;
-  line-height:1.5;margin:0 0 1rem;
+
+.bubble{
+  position:absolute;z-index:20;
+  background:#FBF3E2;color:#2A1017;
+  border:1px solid var(--gold);
+  padding:1.15rem 1.15rem 1rem;
+  text-align:center;
+  box-shadow:0 16px 40px rgba(20,4,9,.55);
+  opacity:0;pointer-events:none;
+  transform:translateY(-10px) scale(.9);
+  transform-origin:top center;
+  transition:opacity .2s ease, transform .24s cubic-bezier(.34,1.56,.64,1);
 }
-.speaks .who{
-  font-family:"Cinzel",serif;font-size:.72rem;letter-spacing:.2em;
-  color:var(--gold);
+.bubble.show{opacity:1;transform:translateY(0) scale(1);pointer-events:auto;}
+.bubble .line{
+  font-family:"EB Garamond",Georgia,serif;font-style:italic;
+  font-size:1.02rem;line-height:1.45;margin:0 0 .6rem;color:#2A1017;
 }
-.speaks.idle .line{color:var(--rose);opacity:.7;font-style:italic;}
-.speaks.idle .who{visibility:hidden;}
-.speaks.host{border-color:var(--gold);background:rgba(240,194,78,.09);}
+.bubble .who{
+  font-family:"Cinzel",serif;font-size:.68rem;letter-spacing:.18em;
+  color:var(--claret);margin:0;
+}
+.bubble .tail{
+  position:absolute;top:-7px;width:12px;height:12px;
+  background:#FBF3E2;border-left:1px solid var(--gold);border-top:1px solid var(--gold);
+  transform:rotate(45deg);margin-left:-6px;
+}
+.bubble.host-said{background:#FFF6DE;}
+
+@media (prefers-reduced-motion:reduce){
+  .bubble{transition:opacity .15s ease;transform:none;}
+  .bubble.show{transform:none;}
+  .cast li.revealed figure{transform:none;}
+  .cast.dimmed li:not(.revealed) figure{transform:none;}
+}
 
 /* ---------- summons ---------- */
 .brief{
@@ -403,8 +430,9 @@ body.crypt a:focus-visible{outline-color:var(--claret);}
 
   .roster{grid-template-columns:repeat(4,1fr);}
   .cast .nameplate{font-size:.86rem;padding:2.4rem .5rem .65rem;}
-  .speaks .line{font-size:1.3rem;}
-  .host-banner .plate{font-size:.86rem;padding:3.4rem .8rem .9rem;}
+  .bubble .line{font-size:1.16rem;}
+  .bubble{padding:1.4rem 1.5rem 1.15rem;}
+  .host-banner .plate{font-size:2rem;letter-spacing:.15em;padding:4.5rem 1rem 1.2rem;}
   .sched-row{grid-template-columns:5rem 1fr;}
   .token{grid-template-columns:4.2rem 1fr;gap:1.5rem;}
   .token svg{width:3.1rem;height:3.1rem;}

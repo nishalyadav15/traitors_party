@@ -33,6 +33,7 @@
     <div class="plate">THE HOST</div>
   </div>
 
+  <div class="cast-stage">
   <ul class="cast">
     <li data-who="Bishwajeet" data-quote="You&#x27;ll know what I am within ten minutes. Everyone always does.">
       <figure>
@@ -58,7 +59,7 @@
         <div class="nameplate">Sourav</div>
       </figure>
     </li>
-    <li data-who="Asmitha" data-quote="I&#x27;ll have been watching you a long time before you start watching me.">
+    <li data-who="Asmitha" data-quote="I&#x27;ve been watching you a lot longer than you&#x27;ve been watching me.">
       <figure>
         <img src="faces/05.png" alt="Asmitha" loading="lazy" width="600" height="600">
         <div class="nameplate">Asmitha</div>
@@ -113,13 +114,13 @@
       </figure>
     </li>
   </ul>
-  <p class="cast-hint">Tap a face</p>
-
-  <div class="speaks idle" id="speaks" aria-live="polite">
-    <span class="mark">&ldquo;</span>
-    <p class="line" id="speaks-line">Everyone here said something before the day began. Tap a face to hear it.</p>
-    <p class="who" id="speaks-who">&nbsp;</p>
+    <div class="bubble" id="bubble" role="status" aria-live="polite">
+      <span class="tail"></span>
+      <p class="line" id="bubble-line"></p>
+      <p class="who" id="bubble-who"></p>
+    </div>
   </div>
+  <p class="cast-hint">Tap a face &mdash; they all said something before the day began</p>
 
   <p>You will spend six hours reading these people. Most of them you already know. That will turn out to matter less than you'd expect — the person you'd vouch for without thinking is exactly the person worth watching, because they know you'd vouch for them.</p>
 
@@ -137,45 +138,75 @@
 
 <script>
 (function(){
-  var panel = document.getElementById("speaks");
-  var line  = document.getElementById("speaks-line");
-  var who   = document.getElementById("speaks-who");
-  var idle  = line.textContent;
-  var cards = Array.prototype.slice.call(document.querySelectorAll(".cast li"));
-  var host  = document.getElementById("host");
+  var stage  = document.querySelector(".cast-stage");
+  var grid   = document.querySelector(".cast");
+  var bubble = document.getElementById("bubble");
+  var tail   = bubble.querySelector(".tail");
+  var line   = document.getElementById("bubble-line");
+  var who    = document.getElementById("bubble-who");
+  var cards  = Array.prototype.slice.call(document.querySelectorAll(".cast li"));
+  var host   = document.getElementById("host");
+  var open   = null;
 
-  function reset(){
+  function close(){
+    bubble.classList.remove("show", "host-said");
+    grid.classList.remove("dimmed");
     cards.forEach(function(c){ c.classList.remove("revealed"); });
-    panel.classList.remove("host");
+    open = null;
   }
-  function speak(el){
-    line.textContent = el.getAttribute("data-quote");
-    who.textContent  = el.getAttribute("data-who");
-    panel.classList.remove("idle");
+
+  function place(anchor, isHost){
+    var a = anchor.getBoundingClientRect();
+    var s = stage.getBoundingClientRect();
+    var stageW = s.width;
+
+    // bubble width: roomy on phones, about two cards on desktop
+    var w = Math.min(stageW - 16, Math.max(240, a.width * 2.1));
+    bubble.style.width = w + "px";
+
+    var centre = (a.left - s.left) + a.width / 2;
+    var left = centre - w / 2;
+    left = Math.max(8, Math.min(left, stageW - w - 8));
+
+    bubble.style.left = left + "px";
+    bubble.style.top  = ((a.bottom - s.top) - 6) + "px";
+    tail.style.left   = Math.max(14, Math.min(centre - left, w - 14)) + "px";
+
+    bubble.classList.toggle("host-said", !!isHost);
   }
-  function hush(){
-    line.textContent = idle;
-    who.innerHTML = "&nbsp;";
-    panel.classList.add("idle");
+
+  function say(anchor, isHost){
+    line.textContent = anchor.getAttribute("data-quote");
+    who.textContent  = anchor.getAttribute("data-who");
+    place(anchor, isHost);
+    // next frame, so the transition runs
+    requestAnimationFrame(function(){ bubble.classList.add("show"); });
   }
 
   cards.forEach(function(card){
-    card.addEventListener("click", function(){
-      var on = card.classList.contains("revealed");
-      reset();
-      if (on){ hush(); return; }
+    card.addEventListener("click", function(e){
+      e.stopPropagation();
+      if (open === card){ close(); return; }
+      close();
       card.classList.add("revealed");
-      speak(card);
+      grid.classList.add("dimmed");
+      open = card;
+      say(card, false);
     });
   });
 
-  host.addEventListener("click", function(){
-    var on = panel.classList.contains("host");
-    reset();
-    if (on){ hush(); return; }
-    panel.classList.add("host");
-    speak(host);
+  host.addEventListener("click", function(e){
+    e.stopPropagation();
+    if (open === host){ close(); return; }
+    close();
+    open = host;
+    say(host, true);
   });
+
+  document.addEventListener("click", function(){ if (open) close(); });
+  bubble.addEventListener("click", function(e){ e.stopPropagation(); });
+  window.addEventListener("resize", function(){ if (open) place(open, open === host); });
+  window.addEventListener("keydown", function(e){ if (e.key === "Escape" && open) close(); });
 })();
 </script>
 
